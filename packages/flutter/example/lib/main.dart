@@ -31,7 +31,7 @@ import 'isar/user.dart';
 
 // ATTENTION: Change the DSN below with your own to see the events in Sentry. Get one at sentry.io
 const String exampleDsn =
-    'https://e85b375ffb9f43cf8bdf9787768149e0@o447951.ingest.sentry.io/5428562';
+    'https://3cf03a8ff188f8274e4b13fbe028a827@sentry-web.fantuan.ca/39';
 
 /// This is an exampleUrl that will be used to demonstrate how http requests are captured.
 const String exampleUrl = 'https://jsonplaceholder.typicode.com/todos/';
