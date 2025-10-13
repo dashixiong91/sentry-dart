@@ -14,23 +14,19 @@ import 'event_processor/platform_exception_event_processor.dart';
 import 'event_processor/screenshot_event_processor.dart';
 import 'event_processor/url_filter/url_filter_event_processor.dart';
 import 'event_processor/widget_event_processor.dart';
-import 'file_system_transport.dart';
 import 'flutter_exception_type_identifier.dart';
 import 'frame_callback_handler.dart';
 import 'integrations/connectivity/connectivity_integration.dart';
 import 'integrations/flutter_framework_feature_flag_integration.dart';
 import 'integrations/frames_tracking_integration.dart';
+import 'integrations/generic_app_start_integration.dart';
 import 'integrations/integrations.dart';
 import 'integrations/native_app_start_handler.dart';
 import 'integrations/screenshot_integration.dart';
-import 'integrations/generic_app_start_integration.dart';
 import 'integrations/thread_info_integration.dart';
 import 'integrations/web_session_integration.dart';
-import 'native/factory.dart';
-import 'native/native_scope_observer.dart';
 import 'native/sentry_native_binding.dart';
-import 'profiling.dart';
-import 'replay/integration.dart';
+import 'native/sentry_native_channel.dart';
 import 'screenshot/screenshot_support.dart';
 import 'utils/platform_dispatcher_wrapper.dart';
 import 'version.dart';
@@ -69,7 +65,9 @@ mixin SentryFlutter {
     sentrySetupStartTime ??= options.clock();
 
     if (options.platform.supportsNativeIntegration) {
-      _native = createBinding(options);
+      // 移除原生依赖，仅使用插件通道通信
+      // _native = createBinding(options);
+      _native = SentryNativeChannel(options);
     }
 
     final wrapper = PlatformDispatcherWrapper(PlatformDispatcher.instance);
@@ -112,7 +110,8 @@ mixin SentryFlutter {
     );
 
     if (_native != null) {
-      SentryNativeProfilerFactory.attachTo(Sentry.currentHub, _native!);
+      // 移除原生依赖，禁用 Profiling 集成
+      // SentryNativeProfilerFactory.attachTo(Sentry.currentHub, _native!);
     }
 
     // Insert it at the start of the list, before the Dart Exceptions that are set in Sentry.init
@@ -129,11 +128,13 @@ mixin SentryFlutter {
         if (options.platform.isWeb) {
           options.transport = JavascriptTransport(_native!, options);
         } else {
-          options.transport = FileSystemTransport(_native!, options);
+          // 移除原生依赖，禁用原生通道传输事件
+          // options.transport = FileSystemTransport(_native!, options);
         }
       }
       if (!options.platform.isWeb) {
-        options.addScopeObserver(NativeScopeObserver(_native!, options));
+        // 移除原生依赖，禁用原生作用域观察
+        // options.addScopeObserver(NativeScopeObserver(_native!, options));
       }
     }
 
@@ -186,10 +187,13 @@ mixin SentryFlutter {
       // Calling a MethodChannel might result in errors.
       // We also need to call this before the native sdk integrations so release is properly propagated.
       integrations.add(LoadReleaseIntegration());
-      integrations.add(createSdkIntegration(native));
-      integrations.add(createLoadDebugImagesIntegration(native));
+      // 移除原生依赖，禁用 NativeSdkIntegration 集成
+      // integrations.add(createSdkIntegration(native));
+      // 移除原生依赖，禁用 LoadNativeDebugImagesIntegration 集成
+      // integrations.add(createLoadDebugImagesIntegration(native));
       if (!platform.isWeb) {
         if (native.supportsLoadContexts) {
+          // 移除原生依赖，禁用 LoadContextsIntegration 集成
           integrations.add(LoadContextsIntegration(native));
         }
         integrations.add(FramesTrackingIntegration(native));
@@ -201,7 +205,8 @@ mixin SentryFlutter {
             ),
           );
         }
-        integrations.add(ReplayIntegration(native));
+        // 移除原生依赖，禁用 replay 集成
+        // integrations.add(ReplayIntegration(native));
       } else {
         // Updating sessions manually is only relevant for web
         // iOS & Android sessions are handled by the native SDKs directly
@@ -210,7 +215,8 @@ mixin SentryFlutter {
         // Complete initialization of the integration depends on the SentryNavigatorObserver
         integrations.add(WebSessionIntegration(native));
       }
-      options.enableDartSymbolication = false;
+      // 移除原生依赖，重新启用 dart 符号化
+      // options.enableDartSymbolication = false;
     }
 
     if (platform.isWeb || platform.isLinux || platform.isWindows) {

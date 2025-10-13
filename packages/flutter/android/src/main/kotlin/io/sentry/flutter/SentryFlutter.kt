@@ -1,5 +1,6 @@
 package io.sentry.flutter
 
+/*
 import android.util.Log
 import io.sentry.Hint
 import io.sentry.SentryEvent
@@ -259,3 +260,4 @@ private class BeforeSendCallbackImpl : SentryOptions.BeforeSendCallback {
     event.setTag("event.environment", environment)
   }
 }
+*/

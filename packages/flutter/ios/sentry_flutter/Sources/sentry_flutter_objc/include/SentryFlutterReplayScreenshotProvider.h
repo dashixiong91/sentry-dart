@@ -1,3 +1,4 @@
+/*
 @import Sentry;
 
 #if SENTRY_TARGET_REPLAY_SUPPORTED
@@ -10,3 +11,4 @@
 
 @end
 #endif
+*/

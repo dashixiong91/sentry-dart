@@ -1,4 +1,5 @@
 package io.sentry.flutter
+/*
 
 import io.sentry.Hint
 import io.sentry.ReplayRecording
@@ -269,3 +270,4 @@ class Fixture {
 
   fun getSut(): SentryFlutter = SentryFlutter()
 }
+*/

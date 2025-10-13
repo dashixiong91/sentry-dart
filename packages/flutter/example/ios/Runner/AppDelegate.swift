@@ -1,6 +1,6 @@
 import UIKit
 import Flutter
-import Sentry
+//import Sentry
 
 @main
 @objc class AppDelegate: FlutterAppDelegate {
@@ -27,15 +27,17 @@ import Sentry
     if call.method == "fatalError" {
       fatalError("fatalError")
     } else if call.method == "crash" {
-      SentrySDK.crash()
+//      SentrySDK.crash()
     } else if call.method == "capture" {
+      /*
       let exception = NSException(
         name: NSExceptionName("NSException"),
         reason: "Swift NSException Captured",
         userInfo: ["details": "lots"])
       SentrySDK.capture(exception: exception)
+     */
     } else if call.method == "capture_message" {
-      SentrySDK.capture(message: "A message from Swift.")
+//      SentrySDK.capture(message: "A message from Swift.")
     } else if call.method == "throw" {
       Buggy.throw()
     }

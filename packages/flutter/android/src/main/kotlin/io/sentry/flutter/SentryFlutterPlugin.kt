@@ -13,6 +13,7 @@ import io.flutter.plugin.common.MethodCall
 import io.flutter.plugin.common.MethodChannel
 import io.flutter.plugin.common.MethodChannel.MethodCallHandler
 import io.flutter.plugin.common.MethodChannel.Result
+/*
 import io.sentry.Breadcrumb
 import io.sentry.DateUtils
 import io.sentry.ScopesAdapter
@@ -27,6 +28,7 @@ import io.sentry.android.replay.ScreenshotRecorderConfig
 import io.sentry.protocol.DebugImage
 import io.sentry.protocol.User
 import io.sentry.transport.CurrentDateProvider
+*/
 import org.json.JSONObject
 import org.json.JSONArray
 import java.lang.ref.WeakReference
@@ -41,7 +43,7 @@ class SentryFlutterPlugin :
   ActivityAware {
   private lateinit var channel: MethodChannel
   private lateinit var context: Context
-  private lateinit var sentryFlutter: SentryFlutter
+//  private lateinit var sentryFlutter: SentryFlutter
 
   private var activity: WeakReference<Activity>? = null
   private var pluginRegistrationTime: Long? = null
@@ -54,7 +56,7 @@ class SentryFlutterPlugin :
     channel = MethodChannel(flutterPluginBinding.binaryMessenger, "sentry_flutter")
     channel.setMethodCallHandler(this)
 
-    sentryFlutter = SentryFlutter()
+//    sentryFlutter = SentryFlutter()
   }
 
   @Suppress("CyclomaticComplexMethod")
@@ -112,6 +114,7 @@ class SentryFlutterPlugin :
     call: MethodCall,
     result: Result,
   ) {
+    /*
     if (!this::context.isInitialized) {
       result.error("1", "Context is null", null)
       return
@@ -128,9 +131,11 @@ class SentryFlutterPlugin :
 
       setupReplay(options)
     }
+    */
     result.success("")
   }
 
+  /*
   private fun setupReplay(options: SentryAndroidOptions) {
     // Replace the default ReplayIntegration with a Flutter-specific recorder.
     options.integrations.removeAll { it is ReplayIntegration }
@@ -150,8 +155,10 @@ class SentryFlutterPlugin :
       options.setReplayController(null)
     }
   }
+  */
 
   private fun fetchNativeAppStart(result: Result) {
+    /*
     if (!sentryFlutter.autoPerformanceTracingEnabled) {
       result.success(null)
       return
@@ -215,6 +222,14 @@ class SentryFlutterPlugin :
 
       result.success(item)
     }
+    */
+    val item = mutableMapOf<String, Any?>(
+      "pluginRegistrationTime" to pluginRegistrationTime,
+      "appStartTime" to pluginRegistrationTime?.toDouble(),
+      "isColdStart" to false,
+      "nativeSpanTimes" to mutableMapOf<String, Any?>(),
+    )
+    result.success(item)
   }
 
   private fun displayRefreshRate(result: Result) {
@@ -240,6 +255,7 @@ class SentryFlutterPlugin :
     result.success(refreshRate)
   }
 
+  /*
   private fun TimeSpan.addToMap(map: MutableMap<String, Any?>) {
     if (startTimestamp == null) return
 
@@ -251,11 +267,13 @@ class SentryFlutterPlugin :
         )
     }
   }
+  */
   private fun setContexts(
     key: String?,
     value: Any?,
     result: Result,
   ) {
+    /*
     if (key == null || value == null) {
       result.success("")
       return
@@ -265,12 +283,15 @@ class SentryFlutterPlugin :
 
       result.success("")
     }
+    */
+    result.success("")
   }
 
   private fun removeContexts(
     key: String?,
     result: Result,
   ) {
+    /*
     if (key == null) {
       result.success("")
       return
@@ -280,12 +301,15 @@ class SentryFlutterPlugin :
 
       result.success("")
     }
+    */
+    result.success("")
   }
 
   private fun setUser(
     user: Map<String, Any?>?,
     result: Result,
   ) {
+    /*
     if (user != null) {
       val options = ScopesAdapter.getInstance().options
       val userInstance = User.fromMap(user, options)
@@ -293,6 +317,7 @@ class SentryFlutterPlugin :
     } else {
       Sentry.setUser(null)
     }
+    */
     result.success("")
   }
 
@@ -300,16 +325,18 @@ class SentryFlutterPlugin :
     breadcrumb: Map<String, Any?>?,
     result: Result,
   ) {
+    /*
     if (breadcrumb != null) {
       val options = ScopesAdapter.getInstance().options
       val breadcrumbInstance = Breadcrumb.fromMap(breadcrumb, options)
       Sentry.addBreadcrumb(breadcrumbInstance)
     }
+    */
     result.success("")
   }
 
   private fun clearBreadcrumbs(result: Result) {
-    Sentry.clearBreadcrumbs()
+//    Sentry.clearBreadcrumbs()
 
     result.success("")
   }
@@ -319,11 +346,13 @@ class SentryFlutterPlugin :
     value: String?,
     result: Result,
   ) {
+    /*
     if (key == null || value == null) {
       result.success("")
       return
     }
     Sentry.setExtra(key, value)
+    */
 
     result.success("")
   }
@@ -332,11 +361,13 @@ class SentryFlutterPlugin :
     key: String?,
     result: Result,
   ) {
+    /*
     if (key == null) {
       result.success("")
       return
     }
     Sentry.removeExtra(key)
+    */
 
     result.success("")
   }
@@ -346,11 +377,13 @@ class SentryFlutterPlugin :
     value: String?,
     result: Result,
   ) {
+    /*
     if (key == null || value == null) {
       result.success("")
       return
     }
     Sentry.setTag(key, value)
+    */
 
     result.success("")
   }
@@ -359,33 +392,35 @@ class SentryFlutterPlugin :
     key: String?,
     result: Result,
   ) {
+    /*
     if (key == null) {
       result.success("")
       return
     }
     Sentry.removeTag(key)
+    */
 
     result.success("")
   }
 
   private fun closeNativeSdk(result: Result) {
-    ScopesAdapter.getInstance().close()
+//    ScopesAdapter.getInstance().close()
 
     result.success("")
   }
 
   companion object {
-    @SuppressLint("StaticFieldLeak")
-    private var replay: ReplayIntegration? = null
+//    @SuppressLint("StaticFieldLeak")
+//    private var replay: ReplayIntegration? = null
 
     @SuppressLint("StaticFieldLeak")
     private var applicationContext: Context? = null
 
     private const val NATIVE_CRASH_WAIT_TIME = 500L
 
-    @Suppress("unused") // Used by native/jni bindings
-    @JvmStatic
-    fun privateSentryGetReplayIntegration(): ReplayIntegration? = replay
+//    @Suppress("unused") // Used by native/jni bindings
+//    @JvmStatic
+//    fun privateSentryGetReplayIntegration(): ReplayIntegration? = replay
 
     @JvmStatic
     fun getApplicationContext(): Context? = applicationContext
@@ -393,6 +428,7 @@ class SentryFlutterPlugin :
     @Suppress("unused") // Used by native/jni bindings
     @JvmStatic
     fun loadContextsAsBytes(): ByteArray? {
+      /*
       val options = ScopesAdapter.getInstance().options
       val context = getApplicationContext()
       if (options !is SentryAndroidOptions || context == null) {
@@ -407,11 +443,14 @@ class SentryFlutterPlugin :
         )
       val json = JSONObject(serializedScope).toString()
       return json.toByteArray(Charsets.UTF_8)
+      */
+      return null
     }
 
     @Suppress("unused") // Used by native/jni bindings
     @JvmStatic
     fun loadDebugImagesAsBytes(addresses: Set<String>): ByteArray? {
+      /*
       val options = ScopesAdapter.getInstance().options as SentryAndroidOptions
 
       val debugImages =
@@ -430,10 +469,13 @@ class SentryFlutterPlugin :
 
       val json = JSONArray(debugImages).toString()
       return json.toByteArray(Charsets.UTF_8)
+      */
+      return null
     }
 
-    private fun List<DebugImage>?.serialize() = this?.map { it.serialize() }
+//    private fun List<DebugImage>?.serialize() = this?.map { it.serialize() }
 
+    /*
     private fun DebugImage.serialize() =
       mapOf(
         "image_addr" to imageAddr,
@@ -444,6 +486,7 @@ class SentryFlutterPlugin :
         "code_id" to codeId,
         "debug_file" to debugFile,
       )
+      */
 
     private fun crash() {
       val exception = RuntimeException("FlutterSentry Native Integration: Sample RuntimeException")
@@ -466,6 +509,7 @@ class SentryFlutterPlugin :
     call: MethodCall,
     result: Result,
   ) {
+    /*
     // Since codec block size is 16, so we have to adjust the width and height to it,
     // otherwise the codec might fail to configure on some devices, see
     // https://cs.android.com/android/platform/superproject/+/master:frameworks/base/media/java/android/media/MediaCodecInfo.java;l=1999-2001
@@ -521,13 +565,17 @@ class SentryFlutterPlugin :
       ),
     )
     replay?.onConfigurationChanged(replayConfig)
+    */
     result.success("")
   }
 
   private fun captureReplay(
     result: Result,
   ) {
+    /*
     replay!!.captureReplay(isTerminating = false)
     result.success(replay!!.getReplayId().toString())
+    */
+    result.success(null)
   }
 }

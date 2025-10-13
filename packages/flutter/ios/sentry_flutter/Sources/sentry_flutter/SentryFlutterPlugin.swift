@@ -1,9 +1,9 @@
-@_spi(Private) import Sentry
+//@_spi(Private) import Sentry
 
-#if SWIFT_PACKAGE
-import Sentry._Hybrid
-import sentry_flutter_objc
-#endif
+// #if SWIFT_PACKAGE
+// import Sentry._Hybrid
+// import sentry_flutter_objc
+// #endif
 
 #if os(iOS)
 import Flutter
@@ -43,7 +43,7 @@ public class SentryFlutterPlugin: NSObject, FlutterPlugin {
         super.init()
     }
 
-    private lazy var sentryFlutter = SentryFlutter()
+    // private lazy var sentryFlutter = SentryFlutter()
 
     private lazy var iso8601Formatter: DateFormatter = {
         let formatter = DateFormatter()
@@ -146,12 +146,15 @@ public class SentryFlutterPlugin: NSObject, FlutterPlugin {
             crash()
 
         case "captureReplay":
+          result(nil)
+/*
 #if canImport(UIKit) && !SENTRY_NO_UIKIT && (os(iOS) || os(tvOS))
             PrivateSentrySDKOnly.captureReplay()
             result(PrivateSentrySDKOnly.getReplayId())
 #else
             result(nil)
 #endif
+*/
 
         default:
             result(FlutterMethodNotImplemented)
@@ -159,6 +162,7 @@ public class SentryFlutterPlugin: NSObject, FlutterPlugin {
     }
 
     private func initNativeSdk(_ call: FlutterMethodCall, result: @escaping FlutterResult) {
+        /*
         guard let arguments = call.arguments as? [String: Any], !arguments.isEmpty else {
             print("Arguments is null or empty")
             result(FlutterError(code: "4", message: "Arguments is null or empty", details: nil))
@@ -222,10 +226,12 @@ public class SentryFlutterPlugin: NSObject, FlutterPlugin {
         }
 
         configureReplay(arguments)
+        */
 
         result("")
     }
 
+/*
   private func configureReplay(_ arguments: [String: Any]) {
 #if canImport(UIKit) && !SENTRY_NO_UIKIT && (os(iOS) || os(tvOS))
        let breadcrumbConverter = SentryFlutterReplayBreadcrumbConverter()
@@ -249,12 +255,13 @@ public class SentryFlutterPlugin: NSObject, FlutterPlugin {
        }
 #endif
   }
+*/
 
     private func closeNativeSdk(_ call: FlutterMethodCall, result: @escaping FlutterResult) {
-        SentrySDK.close()
+//        SentrySDK.close()
         result("")
     }
-
+    /*
     private func setEventOriginTag(event: Event) {
         guard let sdk = event.sdk else {
             return
@@ -281,11 +288,13 @@ public class SentryFlutterPlugin: NSObject, FlutterPlugin {
             }
         }
     }
-
+    */
+    /*
     private func setEventEnvironmentTag(event: Event, origin: String, environment: String) {
         event.tags?["event.origin"] = origin
         event.tags?["event.environment"] = environment
     }
+    */
 
     private func isValidSdk(sdk: [String: Any]) -> Bool {
         guard let name = sdk["name"] as? String else {
@@ -309,6 +318,7 @@ public class SentryFlutterPlugin: NSObject, FlutterPlugin {
 
     private func fetchNativeAppStart(result: @escaping FlutterResult) {
         #if os(iOS) || os(tvOS)
+        /*
         guard let appStartMeasurement = PrivateSentrySDKOnly.appStartMeasurement else {
             print("warning: appStartMeasurement is null")
             result(nil)
@@ -363,6 +373,13 @@ public class SentryFlutterPlugin: NSObject, FlutterPlugin {
             "isColdStart": isColdStart,
             "nativeSpanTimes": nativeSpanTimes
         ]
+        */
+        let item: [String: Any] = [
+            "pluginRegistrationTime": SentryFlutterPlugin.pluginRegistrationTime,
+            "appStartTime": Double(SentryFlutterPlugin.pluginRegistrationTime),
+            "isColdStart": false,
+            "nativeSpanTimes": [:]
+        ]
 
         result(item)
         #else
@@ -372,6 +389,7 @@ public class SentryFlutterPlugin: NSObject, FlutterPlugin {
     }
 
     private func setContexts(key: String?, value: Any?, result: @escaping FlutterResult) {
+      /*
       guard let key = key else {
         result("")
         return
@@ -391,9 +409,12 @@ public class SentryFlutterPlugin: NSObject, FlutterPlugin {
         }
         result("")
       }
+      */
+      result("")
     }
 
     private func removeContexts(key: String?, result: @escaping FlutterResult) {
+      /*
       guard let key = key else {
         result("")
         return
@@ -402,35 +423,45 @@ public class SentryFlutterPlugin: NSObject, FlutterPlugin {
         scope.removeContext(key: key)
         result("")
       }
+      */
+      result("")
     }
 
     private func setUser(user: [String: Any]?, result: @escaping FlutterResult) {
+      /*
       if let user = user {
         let userInstance = PrivateSentrySDKOnly.user(with: user)
         SentrySDK.setUser(userInstance)
       } else {
         SentrySDK.setUser(nil)
       }
+      */
       result("")
     }
 
     private func addBreadcrumb(breadcrumb: [String: Any]?, result: @escaping FlutterResult) {
+      /*
       if let breadcrumb = breadcrumb {
         let breadcrumbInstance = PrivateSentrySDKOnly.breadcrumb(with: breadcrumb)
         SentrySDK.addBreadcrumb(breadcrumbInstance)
       }
+      */
       result("")
     }
 
     private func clearBreadcrumbs(result: @escaping FlutterResult) {
+      /*
       SentrySDK.configureScope { scope in
         scope.clearBreadcrumbs()
 
         result("")
       }
+      */
+      result("")
     }
 
     private func setExtra(key: String?, value: Any?, result: @escaping FlutterResult) {
+      /*
       guard let key = key else {
         result("")
         return
@@ -440,9 +471,12 @@ public class SentryFlutterPlugin: NSObject, FlutterPlugin {
 
         result("")
       }
+      */
+      result("")
     }
 
     private func removeExtra(key: String?, result: @escaping FlutterResult) {
+      /*
       guard let key = key else {
         result("")
         return
@@ -452,9 +486,12 @@ public class SentryFlutterPlugin: NSObject, FlutterPlugin {
 
         result("")
       }
+      */
+      result("")
     }
 
     private func setTag(key: String?, value: String?, result: @escaping FlutterResult) {
+      /*
       guard let key = key, let value = value else {
         result("")
         return
@@ -464,9 +501,12 @@ public class SentryFlutterPlugin: NSObject, FlutterPlugin {
 
         result("")
       }
+      */
+      result("")
     }
 
     private func removeTag(key: String?, result: @escaping FlutterResult) {
+      /*
       guard let key = key else {
         result("")
         return
@@ -476,9 +516,12 @@ public class SentryFlutterPlugin: NSObject, FlutterPlugin {
 
         result("")
       }
+      */
+      result("")
     }
 
     private func collectProfile(_ call: FlutterMethodCall, _ result: @escaping FlutterResult) {
+        /*
         guard let arguments = call.arguments as? [String: Any],
               let traceId = arguments["traceId"] as? String else {
             print("Cannot collect profile: trace ID missing")
@@ -501,9 +544,12 @@ public class SentryFlutterPlugin: NSObject, FlutterPlugin {
         let payload = PrivateSentrySDKOnly.collectProfileBetween(startTime, and: endTime,
                                                                        forTrace: SentryId(uuidString: traceId))
         result(payload)
+        */
+        result(nil)
     }
 
     private func discardProfiler(_ call: FlutterMethodCall, _ result: @escaping FlutterResult) {
+        /*
         guard let traceId = call.arguments as? String else {
             print("Cannot discard a profiler: trace ID missing")
             result(FlutterError(code: "9", message: "Cannot discard a profiler: trace ID missing", details: nil))
@@ -511,6 +557,7 @@ public class SentryFlutterPlugin: NSObject, FlutterPlugin {
         }
 
         PrivateSentrySDKOnly.discardProfiler(forTrace: SentryId(uuidString: traceId))
+        */
         result(nil)
     }
 
@@ -551,17 +598,17 @@ public class SentryFlutterPlugin: NSObject, FlutterPlugin {
     #endif
 
     private func pauseAppHangTracking(_ result: @escaping FlutterResult) {
-        SentrySDK.pauseAppHangTracking()
+        // SentrySDK.pauseAppHangTracking()
         result("")
     }
 
     private func resumeAppHangTracking(_ result: @escaping FlutterResult) {
-        SentrySDK.resumeAppHangTracking()
+        // SentrySDK.resumeAppHangTracking()
         result("")
     }
 
     private func crash() {
-        SentrySDK.crash()
+        // SentrySDK.crash()
     }
 
   // MARK: - Objective-C interoperability
@@ -571,6 +618,7 @@ public class SentryFlutterPlugin: NSObject, FlutterPlugin {
   // Purpose: Called from the Flutter plugin's native bridge (FFI) - bindings are created from SentryFlutterPlugin.h
   @objc(loadDebugImagesAsBytes:)
   public class func loadDebugImagesAsBytes(instructionAddresses: Set<String>) -> NSData? {
+          /*
           var debugImages: [DebugMeta] = []
 
           var imagesAddresses: Set<String> = []
@@ -598,11 +646,13 @@ public class SentryFlutterPlugin: NSObject, FlutterPlugin {
           if let data = try? JSONSerialization.data(withJSONObject: serializedImages, options: []) {
               return data as NSData
           }
+          */
           return nil
   }
 
   // swiftlint:disable:next cyclomatic_complexity
   @objc public class func loadContextsAsBytes() -> NSData? {
+        /*
         var infos: [String: Any] = [:]
 
         SentrySDK.configureScope { scope in
@@ -683,6 +733,7 @@ public class SentryFlutterPlugin: NSObject, FlutterPlugin {
         if let data = try? JSONSerialization.data(withJSONObject: infos, options: []) {
             return data as NSData
         }
+        */
         return nil
   }
 }

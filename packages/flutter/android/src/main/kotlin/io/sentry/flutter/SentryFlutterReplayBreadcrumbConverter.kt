@@ -1,4 +1,5 @@
 package io.sentry.flutter
+/*
 
 import io.sentry.Breadcrumb
 import io.sentry.android.replay.DefaultReplayBreadcrumbConverter
@@ -122,3 +123,4 @@ class SentryFlutterReplayBreadcrumbConverter : DefaultReplayBreadcrumbConverter(
     return message.toString()
   }
 }
+*/

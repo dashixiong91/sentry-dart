@@ -4,7 +4,7 @@ import android.os.Handler
 import io.flutter.embedding.android.FlutterActivity
 import io.flutter.embedding.engine.FlutterEngine
 import io.flutter.plugin.common.MethodChannel
-import io.sentry.Sentry
+//import io.sentry.Sentry
 import kotlin.concurrent.thread
 
 class MainActivity : FlutterActivity() {
@@ -30,12 +30,14 @@ class MainActivity : FlutterActivity() {
           try {
             throw RuntimeException("Catch this java exception!")
           } catch (e: Exception) {
-            Sentry.captureException(e)
+//            Sentry.captureException(e)
           }
 
-        "crash" -> crash()
+//        "crash" -> crash()
+        "crash" -> null
 
-        "cpp_capture_message" -> message()
+//        "cpp_capture_message" -> message()
+        "cpp_capture_message" -> null
 
         "platform_exception" -> throw RuntimeException("Catch this platform exception!")
 
@@ -81,13 +83,13 @@ class MainActivity : FlutterActivity() {
       )
   }
 
-  private external fun crash()
+//  private external fun crash()
 
-  private external fun message()
+//  private external fun message()
 
   companion object {
     init {
-      System.loadLibrary("native-sample")
+//      System.loadLibrary("native-sample")
     }
   }
 }

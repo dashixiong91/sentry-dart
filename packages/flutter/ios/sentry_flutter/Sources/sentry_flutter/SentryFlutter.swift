@@ -1,3 +1,4 @@
+/*
 import Sentry
 
 public final class SentryFlutter {
@@ -136,7 +137,6 @@ public final class SentryFlutter {
             }
         #endif
     }
-
     private func logLevelFrom(diagnosticLevel: String) -> SentryLevel {
         switch diagnosticLevel {
         case "fatal":
@@ -154,3 +154,4 @@ public final class SentryFlutter {
         }
     }
 }
+*/

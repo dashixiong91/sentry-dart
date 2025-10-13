@@ -1,3 +1,4 @@
+/*
 @import Sentry;
 
 #if SWIFT_PACKAGE
@@ -95,3 +96,4 @@
 @end
 
 #endif
+ */

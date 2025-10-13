@@ -1,4 +1,5 @@
 package io.sentry.flutter
+/*
 
 import android.os.Handler
 import android.os.Looper
@@ -88,3 +89,4 @@ internal class SentryFlutterReplayRecorder(
     stop()
   }
 }
+*/
