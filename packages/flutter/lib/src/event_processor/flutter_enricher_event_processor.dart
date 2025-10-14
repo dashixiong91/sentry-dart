@@ -18,7 +18,7 @@ class FlutterEnricherEventProcessor implements EventProcessor {
   FlutterEnricherEventProcessor(this._options);
 
   final SentryFlutterOptions _options;
-
+  // ignore: unused_element
   bool get _hasNativeIntegration => _options.platform.supportsNativeIntegration;
   RuntimeChecker get _checker => _options.runtimeChecker;
 
@@ -40,13 +40,16 @@ class FlutterEnricherEventProcessor implements EventProcessor {
     // information available than Flutter.
     // TODO: while we have a native integration with JS SDK, it's currently opt in and we dont gather contexts yet
     // so for web it's still better to rely on the information of Flutter.
-    final device = _hasNativeIntegration && !_options.platform.isWeb
-        ? null
-        : _getDevice(event.contexts.device);
+    // final device = _hasNativeIntegration && !_options.platform.isWeb
+    //     ? null
+    //     : _getDevice(event.contexts.device);
+    // 移除原生依赖，设备信息由dart实现
+    final device = _getDevice(event.contexts.device);
 
     final contexts = event.contexts;
     contexts.device = device;
-    contexts.runtimes = _getRuntimes(event.contexts.runtimes);
+    // 修复Flutter运行时重复问题
+    // contexts.runtimes = _getRuntimes(event.contexts.runtimes);
     contexts.culture = _getCulture(event.contexts.culture);
     contexts.operatingSystem =
         _getOperatingSystem(event.contexts.operatingSystem);
@@ -198,6 +201,7 @@ class FlutterEnricherEventProcessor implements EventProcessor {
       ..theme = os.theme ?? describeEnum(window.platformBrightness);
   }
 
+  // ignore: unused_element
   List<SentryRuntime> _getRuntimes(List<SentryRuntime>? runtimes) {
     var compiler = '';
 
