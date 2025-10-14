@@ -35,8 +35,8 @@ class ContextInfoEventProcessor extends EventProcessor {
     device ??= SentryDevice();
     if (Platform.isAndroid) {
       final info = await _deviceInfoPlugin.androidInfo;
-      device.name = info.name;
-      device.model = device.model ?? info.model;
+      device.modelId = device.modelId ?? info.model;
+      device.model = device.model ?? info.name;
       device.manufacturer = device.manufacturer ?? info.manufacturer;
       device.brand = device.brand ?? info.brand;
       device.simulator = device.simulator ?? !info.isPhysicalDevice;
@@ -46,10 +46,10 @@ class ContextInfoEventProcessor extends EventProcessor {
       device.freeStorage = device.freeStorage ?? info.freeDiskSize;
     } else if (Platform.isIOS) {
       final info = await _deviceInfoPlugin.iosInfo;
-      device.name = info.name;
+      device.modelId = device.modelId ?? info.utsname.machine;
       device.model = device.model ??
           (info.modelName == "Unknown device"
-              ? info.utsname.machine
+              ? device.modelId
               : info.modelName);
       device.manufacturer = device.manufacturer ?? "Apple";
       device.brand = device.brand ?? "Apple";
