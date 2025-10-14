@@ -194,7 +194,7 @@ mixin SentryFlutter {
       if (!platform.isWeb) {
         if (native.supportsLoadContexts) {
           // 移除原生依赖，禁用 LoadContextsIntegration 集成
-          integrations.add(LoadContextsIntegration(native));
+          // integrations.add(LoadContextsIntegration(native));
         }
         integrations.add(FramesTrackingIntegration(native));
         if (platform.isIOS || platform.isAndroid || platform.isMacOS) {
