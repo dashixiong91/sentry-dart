@@ -7,13 +7,13 @@ import 'package:sentry/sentry.dart';
 
 import 'binding_wrapper.dart';
 import 'event_processor/screenshot_event_processor.dart';
+import 'feedback/sentry_feedback_options.dart';
 import 'navigation/time_to_display_tracker.dart';
 import 'renderer/renderer.dart';
 import 'screenshot/sentry_screenshot_quality.dart';
 import 'sentry_privacy_options.dart';
 import 'sentry_replay_options.dart';
 import 'user_interaction/sentry_user_interaction_widget.dart';
-import 'feedback/sentry_feedback_options.dart';
 
 /// This class adds options which are only available in a Flutter environment.
 /// Note that some of these options require native Sentry integration, which is
@@ -355,11 +355,13 @@ class SentryFlutterOptions extends SentryOptions {
   /// available in the Flutter environment. This way you get more detailed
   /// information where available.
   void enableBreadcrumbTrackingForCurrentPlatform() {
-    if (platform.supportsNativeIntegration) {
-      useNativeBreadcrumbTracking();
-    } else {
-      useFlutterBreadcrumbTracking();
-    }
+    // 移除原生依赖，只使用 Flutter的事件来记录面包屑
+    // if (platform.supportsNativeIntegration) {
+    //   useNativeBreadcrumbTracking();
+    // } else {
+    //   useFlutterBreadcrumbTracking();
+    // }
+    useFlutterBreadcrumbTracking();
   }
 
   /// Setting this to a custom [BindingWrapper] allows you to use a custom [WidgetsBinding].
