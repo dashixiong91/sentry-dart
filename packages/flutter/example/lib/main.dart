@@ -25,6 +25,7 @@ import 'package:sqflite/sqflite.dart';
 import 'package:universal_platform/universal_platform.dart';
 
 import 'auto_close_screen.dart';
+import 'context_info_event_processor.dart';
 import 'drift/connection/connection.dart';
 import 'drift/database.dart';
 import 'isar/user.dart';
@@ -63,6 +64,8 @@ Future<void> setupSentry(
 }) async {
   await SentryFlutter.init(
     (options) {
+      // 测试时关闭压缩，方便查看事件详情，生产环境建议开启
+      options.compressPayload = false;
       options.dsn = exampleDsn;
       options.tracesSampleRate = 1.0;
       options.profilesSampleRate = 1.0;
@@ -98,6 +101,7 @@ Future<void> setupSentry(
         options.environment = 'integration';
         options.beforeSend = beforeSendCallback;
       }
+      options.addEventProcessor(ContextInfoEventProcessor());
     },
     // Init your App.
     appRunner: appRunner,
