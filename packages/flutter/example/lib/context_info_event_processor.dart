@@ -39,11 +39,15 @@ class ContextInfoEventProcessor extends EventProcessor {
       device.model = device.model ?? info.name;
       device.manufacturer = device.manufacturer ?? info.manufacturer;
       device.brand = device.brand ?? info.brand;
-      device.simulator = device.simulator ?? !info.isPhysicalDevice;
+
       device.memorySize = device.memorySize ?? info.physicalRamSize << 20;
       device.freeMemory = device.freeMemory ?? info.availableRamSize << 20;
       device.storageSize = device.storageSize ?? info.totalDiskSize;
       device.freeStorage = device.freeStorage ?? info.freeDiskSize;
+
+      device.simulator = device.simulator ?? !info.isPhysicalDevice;
+      device.lowMemory = device.lowMemory ?? info.isLowRamDevice;
+      device.arch = device.arch ?? info.supportedAbis.firstOrNull;
     } else if (Platform.isIOS) {
       final info = await _deviceInfoPlugin.iosInfo;
       device.modelId = device.modelId ?? info.utsname.machine;
@@ -53,11 +57,13 @@ class ContextInfoEventProcessor extends EventProcessor {
               : info.modelName);
       device.manufacturer = device.manufacturer ?? "Apple";
       device.brand = device.brand ?? "Apple";
-      device.simulator = device.simulator ?? !info.isPhysicalDevice;
+
       device.memorySize = device.memorySize ?? info.physicalRamSize << 20;
       device.freeMemory = device.freeMemory ?? info.availableRamSize << 20;
       device.storageSize = device.storageSize ?? info.totalDiskSize;
       device.freeStorage = device.freeStorage ?? info.freeDiskSize;
+
+      device.simulator = device.simulator ?? !info.isPhysicalDevice;
     }
     return device;
   }
