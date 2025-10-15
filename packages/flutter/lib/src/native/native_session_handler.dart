@@ -32,10 +32,7 @@ class NativeSessionHandler {
     if (session == null) {
       return;
     }
-    final user = event.user;
-    if (user != null) {
-      session.update(user: user);
-    }
+    session.update(user: event.user);
     final exceptions = event.exceptions;
     if (exceptions == null || exceptions.isEmpty) {
       return;
@@ -58,6 +55,7 @@ class NativeSessionHandler {
     if (session == null) {
       return;
     }
+    session.update(user: _hub.scope.user);
     session.end();
     _session = null;
     _captureSession(session);
