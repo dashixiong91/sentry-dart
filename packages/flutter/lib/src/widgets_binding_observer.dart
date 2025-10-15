@@ -7,6 +7,8 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 import '../sentry_flutter.dart';
+import 'integrations/native_session_integration.dart';
+import 'native/native_session_handler.dart';
 import 'utils/timer_debouncer.dart';
 
 /// This is a `WidgetsBindingObserver` which can observe some events of a
@@ -48,6 +50,8 @@ class SentryWidgetsBindingObserver with WidgetsBindingObserver {
       final window = _options.bindingUtils.instance?.window;
       _screenSizeStreamController.add(window);
     }
+    _nativeSessionIntegration =
+        _options.integrations.whereType<NativeSessionIntegration>().firstOrNull;
   }
 
   final Hub _hub;
@@ -62,6 +66,9 @@ class SentryWidgetsBindingObserver with WidgetsBindingObserver {
   // ignore: deprecated_member_use
   final StreamController<SingletonFlutterWindow?> _screenSizeStreamController =
       StreamController(sync: true);
+
+  NativeSessionIntegration? _nativeSessionIntegration;
+  Timer? _sessionTimer;
 
   /// This method records lifecycle events.
   /// It tries to mimic the behavior of ActivityBreadcrumbsIntegration of Sentry
@@ -104,6 +111,19 @@ class SentryWidgetsBindingObserver with WidgetsBindingObserver {
         }
         _appInBackgroundStopwatch.reset();
       }
+    }
+    final nativeSessionHandler =
+        _nativeSessionIntegration?.nativeSessionHandler;
+    _sessionTimer?.cancel();
+    if (state == AppLifecycleState.resumed) {
+      nativeSessionHandler?.startSession();
+    } else if (state == AppLifecycleState.paused) {
+      if (nativeSessionHandler != null) {
+        _sessionTimer = Timer(_options.autoSessionTrackingInterval,
+            nativeSessionHandler!.endSession);
+      }
+    } else if (state == AppLifecycleState.detached) {
+      nativeSessionHandler?.endSession();
     }
   }
 

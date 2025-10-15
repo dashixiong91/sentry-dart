@@ -22,6 +22,7 @@ import 'integrations/frames_tracking_integration.dart';
 import 'integrations/generic_app_start_integration.dart';
 import 'integrations/integrations.dart';
 import 'integrations/native_app_start_handler.dart';
+import 'integrations/native_session_integration.dart';
 import 'integrations/screenshot_integration.dart';
 import 'integrations/thread_info_integration.dart';
 import 'integrations/web_session_integration.dart';
@@ -208,6 +209,8 @@ mixin SentryFlutter {
         }
         // 移除原生依赖，禁用 replay 集成
         // integrations.add(ReplayIntegration(native));
+        // 移除原生依赖，使用自行实现的会话跟踪集成
+        integrations.add(NativeSessionIntegration());
       } else {
         // Updating sessions manually is only relevant for web
         // iOS & Android sessions are handled by the native SDKs directly
