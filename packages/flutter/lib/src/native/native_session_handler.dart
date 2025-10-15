@@ -48,8 +48,9 @@ class NativeSessionHandler {
         break;
       }
     }
-    session.update(
-        status: crashed ? SessionState.crashed : null, addErrorsCount: true);
+    if (crashed) {
+      session.update(status: SessionState.crashed, addErrorsCount: true);
+    }
   }
 
   void endSession() {
