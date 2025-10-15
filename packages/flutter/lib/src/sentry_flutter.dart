@@ -186,7 +186,8 @@ mixin SentryFlutter {
       // LoadReleaseIntegration needs to be executed after all the error handlers are in place.
       // Calling a MethodChannel might result in errors.
       // We also need to call this before the native sdk integrations so release is properly propagated.
-      integrations.add(LoadReleaseIntegration());
+      // release 和 dist 信息由业务层设置，禁用 LoadReleaseIntegration 集成
+      // integrations.add(LoadReleaseIntegration());
       // 移除原生依赖，禁用 NativeSdkIntegration 集成
       // integrations.add(createSdkIntegration(native));
       // 移除原生依赖，禁用 LoadNativeDebugImagesIntegration 集成
