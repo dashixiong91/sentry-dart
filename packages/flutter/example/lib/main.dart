@@ -23,6 +23,8 @@ import 'package:sqflite/sqflite.dart';
 // import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 // import 'package:sqflite_common_ffi_web/sqflite_ffi_web.dart';
 import 'package:universal_platform/universal_platform.dart';
+// ignore: depend_on_referenced_packages
+import 'package:uuid/uuid.dart';
 
 import 'auto_close_screen.dart';
 import 'context_info_event_processor.dart';
@@ -64,6 +66,8 @@ Future<void> setupSentry(
 }) async {
   await SentryFlutter.init(
     (options) {
+      options.release = "1";
+      options.distinctId = const Uuid().v4();
       // 测试时关闭压缩，方便查看事件详情，生产环境建议开启
       options.compressPayload = false;
       options.dsn = exampleDsn;
