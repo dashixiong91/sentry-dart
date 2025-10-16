@@ -11,8 +11,8 @@ class Session {
   final DateTime started;
   DateTime? timestamp;
   int errorCount;
-  String? distinctId;
-  final String? sessionId;
+  final String distinctId;
+  final String sessionId;
   bool? init;
   SessionState status;
   int? sequence;
@@ -29,8 +29,8 @@ class Session {
     required this.started,
     this.timestamp,
     required this.errorCount,
-    this.distinctId,
-    this.sessionId,
+    required this.distinctId,
+    required this.sessionId,
     this.init,
     this.sequence,
     this.duration,
@@ -42,7 +42,7 @@ class Session {
   });
 
   factory Session.initial({
-    String? distinctId,
+    required String distinctId,
     SentryUser? user,
     String? environment,
     required String release,
@@ -91,7 +91,7 @@ class Session {
   }) {
     var updated = false;
 
-    if (status != null && status != this.status) {
+    if (status != null) {
       this.status = status;
       updated = true;
     }
@@ -110,8 +110,7 @@ class Session {
       this.abnormalMechanism = abnormalMechanism;
       updated = true;
     }
-    if (user != null) {
-      distinctId = user.id;
+    if (user != null && user.ipAddress != null) {
       ipAddress = user.ipAddress;
       updated = true;
     }
@@ -149,8 +148,8 @@ class Session {
 
   Map<String, dynamic> toJson() {
     return {
-      if (sessionId != null) 'sid': sessionId,
-      if (distinctId != null) 'did': distinctId,
+      'sid': sessionId,
+      'did': distinctId,
       if (init != null) 'init': init,
       'started': formatDateAsIso8601WithMillisPrecision(started),
       'status': status.name,

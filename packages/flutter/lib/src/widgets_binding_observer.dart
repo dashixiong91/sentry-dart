@@ -8,7 +8,6 @@ import 'package:flutter/material.dart';
 
 import '../sentry_flutter.dart';
 import 'integrations/native_session_integration.dart';
-import 'native/native_session_handler.dart';
 import 'utils/timer_debouncer.dart';
 
 /// This is a `WidgetsBindingObserver` which can observe some events of a
@@ -120,7 +119,7 @@ class SentryWidgetsBindingObserver with WidgetsBindingObserver {
     } else if (state == AppLifecycleState.paused) {
       if (nativeSessionHandler != null) {
         _sessionTimer = Timer(_options.autoSessionTrackingInterval,
-            nativeSessionHandler!.endSession);
+            nativeSessionHandler.endSession);
       }
     } else if (state == AppLifecycleState.detached) {
       nativeSessionHandler?.endSession();

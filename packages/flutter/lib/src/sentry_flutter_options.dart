@@ -34,6 +34,9 @@ class SentryFlutterOptions extends SentryOptions {
   /// Enable or disable reporting of used packages.
   bool reportPackages = true;
 
+  /// The distinct Id (generated Guid) used for session tracking
+  String distinctId = "";
+
   /// Enable or disable the Auto session tracking on the Native SDKs (Android/iOS) and Web.
   ///
   /// Note: On web platforms, this requires using [SentryNavigatorObserver] to function properly.

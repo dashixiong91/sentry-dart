@@ -22,8 +22,10 @@ class NativeSessionHandler {
     if (release == null) {
       return;
     }
-    _session =
-        Session.initial(environment: _options.environment, release: release);
+    _session = Session.initial(
+        distinctId: _options.distinctId,
+        environment: _options.environment,
+        release: release);
     _captureSession(_session!);
   }
 
@@ -67,6 +69,11 @@ class NativeSessionHandler {
         SentryLevel.warning,
         "hub is disabled and this 'captureSession' call is a no-op.",
       );
+      return;
+    }
+    if (session.distinctId.isEmpty) {
+      _options.log(SentryLevel.warning,
+          "Sessions can't be captured without setting a distinctId.");
       return;
     }
     if (session.release.isEmpty) {
