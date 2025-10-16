@@ -29,7 +29,7 @@ class NativeSessionHandler {
     _captureSession(_session!);
   }
 
-  Future<void> updateSessionFromEvent(SentryEvent event) async {
+  void updateSessionFromEvent(SentryEvent event) {
     final session = _session;
     if (session == null) {
       return;
