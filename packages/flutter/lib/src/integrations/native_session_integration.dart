@@ -23,7 +23,7 @@ class NativeSessionIntegration implements Integration<SentryFlutterOptions> {
       return;
     }
     _options = options;
-    _nativeSessionHandler = NativeSessionHandler(hub);
+    _nativeSessionHandler = NativeSessionHandler(options,hub);
     _onBeforeSendEventCallback = (lifecycleEvent) {
       _nativeSessionHandler?.updateSessionFromEvent(lifecycleEvent.event);
     };

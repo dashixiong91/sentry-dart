@@ -7,13 +7,10 @@ import '../../sentry_flutter.dart';
 import 'native_session.dart';
 
 class NativeSessionHandler {
+  final SentryFlutterOptions _options;
   final Hub _hub;
-  NativeSessionHandler(this._hub);
-
+  NativeSessionHandler(this._options,this._hub);
   Session? _session;
-
-  SentryFlutterOptions get _options => _hub.options as SentryFlutterOptions;
-
   void startSession() {
     if (_session != null) {
       return;
