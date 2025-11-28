@@ -23,11 +23,10 @@ public class SentryFlutterPlugin: NSObject, FlutterPlugin {
 
     private static let nativeClientName = "sentry.cocoa.flutter"
 
-    private static var pluginRegistrationTime: Int64 = 0
+    private var pluginRegistrationTime: Int64 = 0
 
     public static func register(with registrar: FlutterPluginRegistrar) {
-        pluginRegistrationTime = Int64(Date().timeIntervalSince1970 * 1000)
-
+      
 #if os(iOS)
         let channel = FlutterMethodChannel(name: "sentry_flutter", binaryMessenger: registrar.messenger())
 #elseif os(macOS)
@@ -40,6 +39,7 @@ public class SentryFlutterPlugin: NSObject, FlutterPlugin {
 
     private init(channel: FlutterMethodChannel) {
         self.channel = channel
+        pluginRegistrationTime = Int64(Date().timeIntervalSince1970 * 1000)
         super.init()
     }
 
@@ -368,15 +368,15 @@ public class SentryFlutterPlugin: NSObject, FlutterPlugin {
         let isColdStart = appStartMeasurement.type == .cold
 
         let item: [String: Any] = [
-            "pluginRegistrationTime": SentryFlutterPlugin.pluginRegistrationTime,
+            "pluginRegistrationTime": pluginRegistrationTime,
             "appStartTime": appStartTime,
             "isColdStart": isColdStart,
             "nativeSpanTimes": nativeSpanTimes
         ]
         */
         let item: [String: Any] = [
-            "pluginRegistrationTime": SentryFlutterPlugin.pluginRegistrationTime,
-            "appStartTime": Double(SentryFlutterPlugin.pluginRegistrationTime),
+            "pluginRegistrationTime": pluginRegistrationTime,
+            "appStartTime": Double(pluginRegistrationTime),
             "isColdStart": false,
             "nativeSpanTimes": [:]
         ]
